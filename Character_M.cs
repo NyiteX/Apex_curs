@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace Apex_curs
 {
-    internal class Character_M : INotifyPropertyChanged
+    public class Character_M : INotifyPropertyChanged
     {
         BitmapImage img;
         public BitmapImage Image

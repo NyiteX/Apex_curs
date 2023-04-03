@@ -23,11 +23,13 @@ namespace Apex_curs
     public partial class MainWindow : Window
     {
         string connectionString = @"Data Source = WIN-U669V8L9R5E; Initial Catalog = GameDB; Trusted_Connection=True";
+        Character_VM Characters_;
         public MainWindow()
         {
             InitializeComponent();
-
             Ini_fon(1);
+
+            Characters_ = new Character_VM(connectionString);
         }
 
         void Ini_fon(int pic_id)
@@ -59,6 +61,38 @@ namespace Apex_curs
                 }
             }
             catch {}
+        }
+
+        private void l_box_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                tb_lore.Text = Characters_.Items[l_box.SelectedIndex].Lore;
+            }
+            catch { }
+        }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
+
+        private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (WindowState == WindowState.Normal)
+                WindowState = WindowState.Maximized;
+            else
+                WindowState = WindowState.Normal;
+        }
+
+        private void l_box_Loaded(object sender, RoutedEventArgs e)
+        {
+            l_box.DataContext = Characters_;
         }
     }
 }
