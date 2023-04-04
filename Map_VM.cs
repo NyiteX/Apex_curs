@@ -7,36 +7,35 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
 namespace Apex_curs
 {
-    public class Character_VM : INotifyPropertyChanged
+    public class Map_VM : INotifyPropertyChanged
     {
-        Character_M character;
+        Character_M map;
         string connectionString;
         public ObservableCollection<Character_M> Items { get; set; }
-        public Character_M Character
+        public Character_M Map
         {
-            get { return character; }
+            get { return map; }
             set
             {
-                character = value;
-                OnPropertyChanged("Character");
+                map = value;
+                OnPropertyChanged("Map");
             }
         }
-        public Character_VM(string connectionString)
+        public Map_VM(string connectionString)
         {
             Items = new ObservableCollection<Character_M>();
             this.connectionString = connectionString;
 
-            Load_CharactersToList(connectionString);
+            Load_MapsToList(connectionString);
         }
 
-        void Load_CharactersToList(string connectionString)
+        void Load_MapsToList(string connectionString)
         {
             try
             {
@@ -45,7 +44,7 @@ namespace Apex_curs
                     connection.Open();
 
                     SqlCommand command = new SqlCommand(
-                        "SELECT Character_my.Names,Character_my.Lore,Pic_table.Pic FROM Character_my,Pic_table WHERE Pic_table.ID = Character_my.PicID",
+                        "SELECT Names,Lore,Pic FROM Pic_Map",
                         connection);
                     SqlDataReader reader = command.ExecuteReader();
 
@@ -64,7 +63,7 @@ namespace Apex_curs
                     }
                 }
             }
-            catch { }
+            catch(Exception e) { MessageBox.Show(e.Message); }
         }
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace Apex_curs
 {
@@ -24,15 +27,17 @@ namespace Apex_curs
     {
         string connectionString = @"Data Source = WIN-U669V8L9R5E; Initial Catalog = GameDB; Trusted_Connection=True";
         Character_VM Characters_;
+        Map_VM Maps_;
         public MainWindow()
         {
             InitializeComponent();
-            Ini_fon(1);
+            Load_backgroundImg(1);
 
             Characters_ = new Character_VM(connectionString);
+            Maps_ = new Map_VM(connectionString);
         }
 
-        void Ini_fon(int pic_id)
+        void Load_backgroundImg(int pic_id)
         {
             try
             {
@@ -62,6 +67,37 @@ namespace Apex_curs
             }
             catch {}
         }
+        void Load_account_info(string playerName = "Tendikyrrap")
+        {
+            Task.Factory.StartNew(async() => 
+            {
+                var httpClient = new HttpClient();
+                var apiKey = "dbb6ed3d331dda882b02101bcc0c608b";
+                var platform = "PC";
+                var test = $"https://api.mozambiquehe.re/bridge?auth={apiKey}&player={playerName}&platform={platform}";
+                var response = await httpClient.GetAsync(test);
+                var result = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine(result + "\n---------------------------------------------------\n");
+
+                // Разбиваем информацию по группам
+                var stats = JObject.Parse(result);
+                var overallStats = stats["global"];
+                var legendStats = stats["legends"];
+                var weaponStats = stats["weapons"];
+
+                var name = overallStats["name"];
+
+                /*Console.WriteLine(name);*/
+                foreach (JProperty legend in overallStats)
+                {
+                    Console.WriteLine(legend.Value.ToString());
+                }
+            });
+            
+        }
+
+
 
         private void l_box_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -92,7 +128,41 @@ namespace Apex_curs
 
         private void l_box_Loaded(object sender, RoutedEventArgs e)
         {
+            l_box.Visibility = Visibility.Hidden;
+            tb_lore.Visibility = Visibility.Hidden;
+
             l_box.DataContext = Characters_;
+            list_maps.DataContext = Maps_;
+
+            list_about.Items.Add("Legends");
+        }
+
+        private void Minimize_btn_click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void list_maps_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if(list_maps.SelectedIndex != -1)
+                {
+                    border_map_info.Visibility = Visibility.Visible;
+
+                    try
+                    {
+                        tb_map_lore.Text = Maps_.Items[list_maps.SelectedIndex].Lore;
+                        img_map.Source = Maps_.Items[list_maps.SelectedIndex].Image;
+                    }
+                    catch { }
+                }
+                else
+                {
+                    border_map_info.Visibility = Visibility.Hidden;
+                }
+            }
+            catch { }
         }
     }
 }

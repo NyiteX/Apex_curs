@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:Apex_curs"
         mc:Ignorable="d"
         Title="MainWindow" Height="789" Width="1111"
+        x:Name="mainWindow"
         WindowStyle="None"
         BorderBrush="Black"
-        BorderThickness="5"
+        BorderThickness="5,0,5,5"
         AllowsTransparency="True" AllowDrop="True"
         WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown" MouseDoubleClick="Window_MouseDoubleClick">
     <Window.Resources>
@@ -109,12 +110,94 @@
                 </MultiTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="FocusVisual1">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#1F26A0DA"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Border" Color="#a826A0Da"/>
+        <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="#3D26A0DA"/>
+        <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="#FF26A0DA"/>
+        <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="#3DDADADA"/>
+        <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="#FFDADADA"/>
+        <Style x:Key="lb_no_border" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Padding" Value="4,1"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual1}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.MouseOver.Background}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="Bd" Value="Red"/>
+                            </MultiTrigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="label_no_border" TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Label}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="Red"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Grid>
-        <ListBox x:Name="l_box" ItemsSource="{Binding Items}" SelectedItem ="{Binding Character}"  Margin="110,136,111,58" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Background="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="l_box_SelectionChanged" Loaded="l_box_Loaded" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="6*"></RowDefinition>
+            <RowDefinition Height="43*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="1" x:Name="border_map_info">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Image x:Name="img_map" Grid.Row="0"/>
+                <TextBlock x:Name="tb_map_lore" Grid.Row="1" Margin="144,0,144,48" FontSize="18"/>
+            </Grid>
+        </Border>
+        <ListBox x:Name="l_box" ItemsSource="{Binding Items}" SelectedItem ="{Binding Character}" Grid.Row="1" Margin="70,0,345,31" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Background="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="l_box_SelectionChanged" Loaded="l_box_Loaded" Foreground="Red" >
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" ></WrapPanel>
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
@@ -126,8 +209,83 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="tb_lore" HorizontalAlignment="Center" Margin="0,26,0,0" VerticalAlignment="Top" Width="620" Height="105" Background="{x:Null}" BorderBrush="{x:Null}" VerticalScrollBarVisibility="Hidden" TextWrapping="WrapWithOverflow" FontSize="20" BorderThickness="0,0,0,0" IsReadOnly="True" FontFamily="MV Boli" Focusable="False" Cursor="Arrow"/>
-        <Button Content="r" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="39" FontFamily="Webdings" Width="40" FontSize="36" Click="Button_Click"/>
+        <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="tb_lore" HorizontalAlignment="Right" Margin="0,10,30,0" VerticalAlignment="Top" Width="310" Height="570" Background="{x:Null}" BorderBrush="{x:Null}" VerticalScrollBarVisibility="Hidden" TextWrapping="WrapWithOverflow" FontSize="20" BorderThickness="0,0,0,0" IsReadOnly="True" FontFamily="MV Boli" Focusable="False" Cursor="Arrow" Grid.Row="1" Grid.RowSpan="1"/>
 
+        <Canvas Grid.Row="1" Background="#00FFB6C1" Margin="0,0,-10,-133">
+            <StackPanel x:Name="border_Maps" Width="200" Height="214" Canvas.Left="300" Canvas.Top="-220" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#2F000000">
+                <StackPanel.Triggers>
+                    <EventTrigger RoutedEvent="UIElement.MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard Timeline.DesiredFrameRate="60">
+                                <DoubleAnimation Storyboard.TargetName="border_Maps" Storyboard.TargetProperty="(Canvas.Top)"
+                                 From="0" To="-220" AutoReverse="False" Duration="0:0:0.2" RepeatBehavior="1x"
+                                 DecelerationRatio="1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </StackPanel.Triggers>
+
+                <ListBox ItemContainerStyle="{DynamicResource lb_no_border}" x:Name="list_maps" Margin="0,20,0,0" ItemsSource="{Binding Items}" SelectedItem ="{Binding Map}" Background="{x:Null}" Height="196" SelectionChanged="list_maps_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="{Binding Name}" FontSize="15" Foreground="White"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
+            <StackPanel x:Name="border_about" Width="200" Height="214" Canvas.Left="100" Canvas.Top="-220" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#2F000000">
+                <StackPanel.Triggers>
+                    <EventTrigger RoutedEvent="UIElement.MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard Timeline.DesiredFrameRate="60">
+                                <DoubleAnimation Storyboard.TargetName="border_about" Storyboard.TargetProperty="(Canvas.Top)"
+                                 From="0" To="-220" AutoReverse="False" Duration="0:0:0.2" RepeatBehavior="1x"
+                                 DecelerationRatio="1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </StackPanel.Triggers>
+
+                <ListBox ItemContainerStyle="{DynamicResource lb_no_border}" x:Name="list_about" Margin="0,20,0,0" ItemsSource="{Binding Items}" SelectedItem ="{Binding Map}" Background="{x:Null}" Height="196" SelectionChanged="list_maps_SelectionChanged"/>
+            </StackPanel>
+
+        </Canvas>
+
+        <Border BorderBrush="Black" BorderThickness="0" Grid.Row="0" Background="Black">
+            <Grid>
+                <Label Style="{DynamicResource label_no_border}" Content="Maps" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" Width="70" FontFamily="Impact" Foreground="#FFE4C9AE" FontSize="18" Margin="308,54,0,0" >
+                    <Label.Triggers>
+                        <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard Timeline.DesiredFrameRate="60">
+                                    <DoubleAnimation Storyboard.TargetName="border_Maps" Storyboard.TargetProperty="(Canvas.Top)"
+                                 From="-220" To="0" AutoReverse="False" Duration="0:0:0.4" RepeatBehavior="1x"
+                                 DecelerationRatio="1"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Label.Triggers>
+                </Label>
+
+                <Label Style="{DynamicResource label_no_border}" Content="About" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" Width="75" FontFamily="Impact" Foreground="#FFE4C9AE" FontSize="18" Margin="128,54,0,0" >
+                    <Label.Triggers>
+                        <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard Timeline.DesiredFrameRate="60">
+                                    <DoubleAnimation Storyboard.TargetName="border_about" Storyboard.TargetProperty="(Canvas.Top)"
+                                 From="-220" To="0" AutoReverse="False" Duration="0:0:0.4" RepeatBehavior="1x"
+                                 DecelerationRatio="1"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+        </Border>
+        <Button Content="r" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="39" FontFamily="Webdings" Width="40" FontSize="36" Click="Button_Click" Grid.Row="0" Foreground="#FFDDDDDD" Background="{x:Null}"/>
+        <Button Content="_____" HorizontalAlignment="Right" Margin="0,10,60,0" VerticalAlignment="Top" Height="39" Width="40" FontSize="20" Grid.Row="0" Click="Minimize_btn_click" Foreground="#FFDDDDDD" Background="{x:Null}"/>
     </Grid>
 </Window>
