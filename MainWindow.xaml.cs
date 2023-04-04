@@ -67,8 +67,9 @@ namespace Apex_curs
             }
             catch {}
         }
-        void Load_account_info(string playerName = "Tendikyrrap")
-        {
+        bool Load_account_info(string playerName = "Tendikyrrap")
+        { 
+            bool f = false;
             Task.Factory.StartNew(async() => 
             {
                 var httpClient = new HttpClient();
@@ -88,17 +89,17 @@ namespace Apex_curs
 
                 var name = overallStats["name"];
 
-                /*Console.WriteLine(name);*/
+                /*Console.WriteLine(name);
                 foreach (JProperty legend in overallStats)
                 {
                     Console.WriteLine(legend.Value.ToString());
-                }
+                }*/
             });
-            
+            return f;
         }
 
 
-
+        //lore text for Legends list
         private void l_box_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -107,17 +108,18 @@ namespace Apex_curs
             }
             catch { }
         }
+        //close btn
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
-
+        //window move
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
         }
-
+        //maximize window
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (WindowState == WindowState.Normal)
@@ -126,6 +128,7 @@ namespace Apex_curs
                 WindowState = WindowState.Normal;
         }
 
+        //added About menu here
         private void l_box_Loaded(object sender, RoutedEventArgs e)
         {
             l_box.Visibility = Visibility.Hidden;
@@ -155,13 +158,11 @@ namespace Apex_curs
 
                     tb_map_lore.Text = Maps_.Items[list_maps.SelectedIndex].Name + "\n\n" + Maps_.Items[list_maps.SelectedIndex].Lore;
                     img_map.Source = Maps_.Items[list_maps.SelectedIndex].Image;
-
                 }
                 else
                 {
                     img_map.Visibility = Visibility.Hidden;
                     tb_map_lore.Visibility = Visibility.Hidden;
-                    Console.WriteLine();
                 }
             }
             catch { }
@@ -190,7 +191,12 @@ namespace Apex_curs
         {
             if(tb_acccount.Text != "Enter account name..." && tb_acccount.Text.Count() > 0)
             {
+                list_maps.SelectedIndex = -1;
+                list_about.SelectedIndex = -1;
 
+
+                Window_Acc_stats form = new Window_Acc_stats();
+                form.ShowDialog();             
             }
         }
 

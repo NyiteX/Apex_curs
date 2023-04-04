@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Acc_info_M.cs" />
     <Compile Include="Window_Acc_stats.xaml.cs">
       <DependentUpon>Window_Acc_stats.xaml</DependentUpon>
     </Compile>

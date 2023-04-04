@@ -232,6 +232,60 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="FocusVisual3">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background2" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border2" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border2" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background2" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border2" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background2" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border2" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground2" Color="#FF838383"/>
+        <Style x:Key="btn_noBackground_colorText" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual3}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background2}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border2}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border2}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="Red"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background2}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border2}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background2}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border2}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground2}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -249,7 +303,7 @@
             <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="tb_lore" HorizontalAlignment="Right" Margin="0,65,97,0" VerticalAlignment="Top" Width="896" Height="228" Background="{x:Null}" BorderBrush="{x:Null}" VerticalScrollBarVisibility="Hidden" TextWrapping="WrapWithOverflow" FontSize="20" BorderThickness="0,0,0,0" IsReadOnly="True" FontFamily="MV Boli" Cursor="Arrow" Grid.Row="0"/>
 
             <Canvas Grid.Row="0" Grid.RowSpan="5" Background="#00FFB6C1" Margin="0,0,-10,-133" Focusable="False">
-                <StackPanel x:Name="border_Maps" Width="200" Height="214" Canvas.Left="300" Canvas.Top="-225" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#2F000000">
+                <StackPanel x:Name="border_Maps" Width="200" Height="214" Canvas.Left="300" Canvas.Top="-225" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#72000000">
                     <StackPanel.Triggers>
                         <EventTrigger RoutedEvent="UIElement.MouseLeave">
                             <BeginStoryboard>
@@ -273,7 +327,7 @@
                     </ListBox>
                 </StackPanel>
 
-                <StackPanel x:Name="border_about" Width="200" Height="214" Canvas.Left="100" Canvas.Top="-225" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#2F000000">
+                <StackPanel x:Name="border_about" Width="200" Height="214" Canvas.Left="100" Canvas.Top="-225" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#72000000">
                     <StackPanel.Triggers>
                         <EventTrigger RoutedEvent="UIElement.MouseLeave">
                             <BeginStoryboard>
@@ -347,7 +401,7 @@
                 </Label>
             </Grid>
         </Border>
-        <Button Content="r" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="39" FontFamily="Webdings" Width="40" FontSize="36" Click="Button_Click" Grid.Row="0" Foreground="#FFDDDDDD" Background="{x:Null}"/>
-        <Button Content="_____" HorizontalAlignment="Right" Margin="0,10,60,0" VerticalAlignment="Top" Height="39" Width="40" FontSize="20" Grid.Row="0" Click="Minimize_btn_click" Foreground="#FFDDDDDD" Background="{x:Null}"/>
+        <Button Content="r" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="39" FontFamily="Webdings" Width="40" FontSize="36" Click="Button_Click" Grid.Row="0" Foreground="#FFDDDDDD" Background="{x:Null}" Style="{DynamicResource btn_noBackground_colorText}"/>
+        <Button Content="_____" HorizontalAlignment="Right" Margin="0,10,60,0" VerticalAlignment="Top" Height="39" Width="40" FontSize="20" Grid.Row="0" Click="Minimize_btn_click" Foreground="#FFDDDDDD" Background="{x:Null}" Style="{DynamicResource btn_noBackground_colorText}"/>
     </Grid>
 </Window>
