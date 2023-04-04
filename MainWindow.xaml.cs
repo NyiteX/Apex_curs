@@ -130,6 +130,7 @@ namespace Apex_curs
         {
             l_box.Visibility = Visibility.Hidden;
             tb_lore.Visibility = Visibility.Hidden;
+            tb_map_lore.Visibility = Visibility.Hidden;
 
             l_box.DataContext = Characters_;
             list_maps.DataContext = Maps_;
@@ -149,10 +150,11 @@ namespace Apex_curs
                 if(list_maps.SelectedIndex != -1)
                 {
                     border_map_info.Visibility = Visibility.Visible;
+                    tb_map_lore.Visibility = Visibility.Visible;
 
                     try
                     {
-                        tb_map_lore.Text = Maps_.Items[list_maps.SelectedIndex].Lore;
+                        tb_map_lore.Text = Maps_.Items[list_maps.SelectedIndex].Name + "\n\n" + Maps_.Items[list_maps.SelectedIndex].Lore;
                         img_map.Source = Maps_.Items[list_maps.SelectedIndex].Image;
                     }
                     catch { }
