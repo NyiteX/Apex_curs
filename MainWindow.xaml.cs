@@ -147,24 +147,60 @@ namespace Apex_curs
         {
             try
             {
-                if(list_maps.SelectedIndex != -1)
+                if (list_maps.SelectedIndex != -1)
                 {
-                    border_map_info.Visibility = Visibility.Visible;
+                    list_about.SelectedIndex = -1;
+                    img_map.Visibility = Visibility.Visible;
                     tb_map_lore.Visibility = Visibility.Visible;
 
-                    try
-                    {
-                        tb_map_lore.Text = Maps_.Items[list_maps.SelectedIndex].Name + "\n\n" + Maps_.Items[list_maps.SelectedIndex].Lore;
-                        img_map.Source = Maps_.Items[list_maps.SelectedIndex].Image;
-                    }
-                    catch { }
+                    tb_map_lore.Text = Maps_.Items[list_maps.SelectedIndex].Name + "\n\n" + Maps_.Items[list_maps.SelectedIndex].Lore;
+                    img_map.Source = Maps_.Items[list_maps.SelectedIndex].Image;
+
                 }
                 else
                 {
-                    border_map_info.Visibility = Visibility.Hidden;
+                    img_map.Visibility = Visibility.Hidden;
+                    tb_map_lore.Visibility = Visibility.Hidden;
                 }
             }
             catch { }
+        }
+        private void list_about_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (list_about.SelectedIndex != -1)
+                {
+                    list_maps.SelectedIndex = -1;
+
+                    l_box.Visibility = Visibility.Visible;
+                    tb_lore.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    l_box.Visibility = Visibility.Hidden;
+                    tb_lore.Visibility = Visibility.Hidden;
+                }
+            }
+            catch { }
+        }
+
+        private void btn_CheckAcc(object sender, RoutedEventArgs e)
+        {
+            if(tb_acccount.Text != "Enter account name..." && tb_acccount.Text.Count() > 0)
+            {
+
+            }
+        }
+
+        private void tb_acccount_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (tb_acccount.Text == "Enter account name...") tb_acccount.Text = "";
+        }
+
+        private void tb_acccount_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (tb_acccount.Text == "") tb_acccount.Text = "Enter account name...";
         }
     }
 }
