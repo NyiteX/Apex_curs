@@ -161,6 +161,7 @@ namespace Apex_curs
                 {
                     img_map.Visibility = Visibility.Hidden;
                     tb_map_lore.Visibility = Visibility.Hidden;
+                    Console.WriteLine();
                 }
             }
             catch { }
