@@ -217,5 +217,16 @@ namespace Apex_curs
         {
             if (tb_acccount.Text == "") tb_acccount.Text = "Enter account name...";
         }
+
+        private void Btn_Settings(object sender, RoutedEventArgs e)
+        {
+            Window_Settings form = new Window_Settings(connectionString);
+            form.Closed += delegate
+            {
+                Characters_ = new Character_VM(connectionString);     //udp Legends list
+            };
+
+            form.ShowDialog();
+        }
     }
 }
