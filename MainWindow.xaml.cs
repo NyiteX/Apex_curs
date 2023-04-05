@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Text;
@@ -160,12 +161,10 @@ namespace Apex_curs
 
         private void btn_CheckAcc(object sender, RoutedEventArgs e)
         {
-            if(tb_acccount.Text != "Enter account name..." && tb_acccount.Text.Count() > 0)
+            if (tb_acccount.Text != "Enter account name..." && tb_acccount.Text.Count() > 0)
             {
                 list_maps.SelectedIndex = -1;
                 list_about.SelectedIndex = -1;
-
-
 
                 Window_Acc_stats form = new Window_Acc_stats(tb_acccount.Text);
                 form.Closed += delegate
@@ -186,6 +185,5 @@ namespace Apex_curs
         {
             if (tb_acccount.Text == "") tb_acccount.Text = "Enter account name...";
         }
-
     }
 }

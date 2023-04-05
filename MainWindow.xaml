@@ -11,7 +11,7 @@
         BorderBrush="Black"
         BorderThickness="5,0,5,5"
         AllowsTransparency="True" AllowDrop="True"
-        WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown" MouseDoubleClick="Window_MouseDoubleClick">
+        WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown" MouseDoubleClick="Window_MouseDoubleClick" Icon="/MagicDust_Yellow.png">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">

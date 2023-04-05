@@ -33,6 +33,7 @@ namespace Apex_curs
         {
             InitializeComponent();
 
+            
             Load_account_info(playername);
         }
         async void Load_account_info(string playerName)
@@ -77,7 +78,11 @@ namespace Apex_curs
 
                 info = new Acc_info_M(name.ToString(), platfo.ToString(), rankName.ToString(), state.ToString(), Convert.ToInt32(level), rankIMG, selectedIMG);
             }
-            catch (Exception l) { MessageBox.Show(l.Message); }
+            catch 
+            { 
+                MessageBox.Show("Аккаунт не найден.");
+                Close();
+            }
             finally { DataContext = info; }
         }
 
@@ -107,14 +112,6 @@ namespace Apex_curs
         {
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
-        }
-        //maximize window
-        private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (WindowState == WindowState.Normal)
-                WindowState = WindowState.Maximized;
-            else
-                WindowState = WindowState.Normal;
         }
         private void Minimize_btn_click(object sender, RoutedEventArgs e)
         {

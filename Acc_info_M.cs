@@ -82,7 +82,7 @@ namespace Apex_curs
                 OnPropertyChanged("SelectedChar_Img");
             }
         }
-
+        public Acc_info_M(){ }
         public Acc_info_M(string names, string platforms, string rankNames, string currentStates, int levels, BitmapImage rankImgs, BitmapImage selected)
         {
             Name = names;
