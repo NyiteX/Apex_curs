@@ -1,24 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace Apex_curs
@@ -30,14 +20,15 @@ namespace Apex_curs
     {
         string apiKey = "dbb6ed3d331dda882b02101bcc0c608b";
         string connectionString = @"Data Source = WIN-U669V8L9R5E; Initial Catalog = GameDB; Trusted_Connection=True";
-        Character_VM Characters_;
-        Map_VM Maps_;
+        Character_VM Characters_;  //legends list
+        Map_VM Maps_;  //maps list
+        Map_timer_M mapUpd_M = new Map_timer_M(); //map timer
 
         DispatcherTimer timerMapUpd = new DispatcherTimer();
         public MainWindow()
         {
             InitializeComponent();
-
+     
             MapTimerUpdate();
             Load_backgroundImg(1);
 
@@ -50,7 +41,7 @@ namespace Apex_curs
             timerMapUpd.Start();
         }
 
-        async void timerTick(object sender, EventArgs e)
+        void timerTick(object sender, EventArgs e)
         {
             MapTimerUpdate();
         }
@@ -87,21 +78,30 @@ namespace Apex_curs
 
         async void MapTimerUpdate()
         {
-            var httpClient = new HttpClient();
+            try
+            {
+                var httpClient = new HttpClient();
 
-            var test = $"https://api.mozambiquehe.re/maprotation?auth={apiKey}";
-            var response = await httpClient.GetAsync(test);
-            var result = await response.Content.ReadAsStringAsync();
+                var test = $"https://api.mozambiquehe.re/maprotation?auth={apiKey}";
+                var response = await httpClient.GetAsync(test);
+                var result = await response.Content.ReadAsStringAsync();
 
-            var stats = JObject.Parse(result);
-            var maps = stats["current"];
-            var map = maps["map"];
-            var remeiningTime = maps["remainingTimer"];
+                var stats = JObject.Parse(result);
+                var maps = stats["current"];
+                var map = maps["map"];
+                var remeiningTime = maps["remainingTimer"];
 
-            label_currmap.Content = $"Current map: {map}";
-            var maps2 = stats["next"];
-            var map2 = maps2["map"];
-            label_nextmap.Content = $"Next map: {map2} start in {remeiningTime}";
+                mapUpd_M.CurrentMap = $"Current map: {map}";
+                var maps2 = stats["next"];
+                var map2 = maps2["map"];
+                mapUpd_M.NextMap = $"Next map: {map2} start in {remeiningTime}";
+            }
+            catch { }
+            finally 
+            {
+                label_currmap.DataContext = mapUpd_M;
+                label_nextmap.DataContext = mapUpd_M;
+            }
         }
         //lore text for Legends list
         private void l_box_SelectionChanged(object sender, SelectionChangedEventArgs e)

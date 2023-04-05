@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.ComponentModel;
 using System.Windows.Media.Imaging;
 
 namespace Apex_curs
 {
-    internal class Acc_info_M : INotifyPropertyChanged
+    public class Acc_info_M : INotifyPropertyChanged
     {
         string name;
         string platform;
