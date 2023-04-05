@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 
@@ -27,18 +28,32 @@ namespace Apex_curs
     /// </summary>
     public partial class MainWindow : Window
     {
+        string apiKey = "dbb6ed3d331dda882b02101bcc0c608b";
         string connectionString = @"Data Source = WIN-U669V8L9R5E; Initial Catalog = GameDB; Trusted_Connection=True";
         Character_VM Characters_;
         Map_VM Maps_;
+
+        DispatcherTimer timerMapUpd = new DispatcherTimer();
         public MainWindow()
         {
             InitializeComponent();
+
+            MapTimerUpdate();
             Load_backgroundImg(1);
 
             Characters_ = new Character_VM(connectionString);
             Maps_ = new Map_VM(connectionString);
+
+            timerMapUpd.Interval = TimeSpan.FromMilliseconds(1000);
+            timerMapUpd.Tick += timerTick;
+
+            timerMapUpd.Start();
         }
 
+        async void timerTick(object sender, EventArgs e)
+        {
+            MapTimerUpdate();
+        }
         void Load_backgroundImg(int pic_id)
         {
             try
@@ -70,7 +85,24 @@ namespace Apex_curs
             catch {}
         }
 
+        async void MapTimerUpdate()
+        {
+            var httpClient = new HttpClient();
 
+            var test = $"https://api.mozambiquehe.re/maprotation?auth={apiKey}";
+            var response = await httpClient.GetAsync(test);
+            var result = await response.Content.ReadAsStringAsync();
+
+            var stats = JObject.Parse(result);
+            var maps = stats["current"];
+            var map = maps["map"];
+            var remeiningTime = maps["remainingTimer"];
+
+            label_currmap.Content = $"Current map: {map}";
+            var maps2 = stats["next"];
+            var map2 = maps2["map"];
+            label_nextmap.Content = $"Next map: {map2} start in {remeiningTime}";
+        }
         //lore text for Legends list
         private void l_box_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

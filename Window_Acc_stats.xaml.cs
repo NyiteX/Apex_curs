@@ -28,6 +28,7 @@ namespace Apex_curs
     /// </summary>
     public partial class Window_Acc_stats : Window
     {
+        string apiKey = "dbb6ed3d331dda882b02101bcc0c608b";
         Acc_info_M info;
         public Window_Acc_stats(string playername)
         {
@@ -40,8 +41,7 @@ namespace Apex_curs
         {
             try
             {
-                var httpClient = new HttpClient();
-                var apiKey = "dbb6ed3d331dda882b02101bcc0c608b";
+                var httpClient = new HttpClient(); 
                 var platform = "PC";
 
                 var test = $"https://api.mozambiquehe.re/bridge?auth={apiKey}&player={playerName}&platform={platform}";
