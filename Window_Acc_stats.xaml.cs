@@ -18,6 +18,8 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Security.Policy;
+using System.Reflection.Emit;
+using System.Xml.Linq;
 
 namespace Apex_curs
 {
@@ -27,27 +29,25 @@ namespace Apex_curs
     public partial class Window_Acc_stats : Window
     {
         Acc_info_M info;
-        public Window_Acc_stats()
+        public Window_Acc_stats(string playername)
         {
             InitializeComponent();
 
-            
-
-            Load_account_info();
+            Load_account_info(playername);
         }
-        bool Load_account_info(string playerName = "Tendikyrrap")
+        async void Load_account_info(string playerName)
         {
-            bool f = false;
-            Task.Factory.StartNew(async () =>
+            try
             {
                 var httpClient = new HttpClient();
                 var apiKey = "dbb6ed3d331dda882b02101bcc0c608b";
                 var platform = "PC";
+
                 var test = $"https://api.mozambiquehe.re/bridge?auth={apiKey}&player={playerName}&platform={platform}";
                 var response = await httpClient.GetAsync(test);
                 var result = await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine(result + "\n---------------------------------------------------\n");
+                //MessageBox.Show(result + "\n---------------------------------------------------\n");
 
                 // Разбиваем информацию по группам
                 var stats = JObject.Parse(result);
@@ -70,21 +70,33 @@ namespace Apex_curs
 
                 var rankURL = rank["rankImg"];
 
-                System.Windows.Controls.Image rankIMG = new System.Windows.Controls.Image();
-                System.Windows.Controls.Image selectedIMG = new System.Windows.Controls.Image();
+                BitmapImage rankIMG = new BitmapImage();
+                BitmapImage selectedIMG = new BitmapImage();
+                rankIMG = DownloadPic(rankURL.ToString());
+                selectedIMG = DownloadPic(imageselectedURL.ToString());
 
-             
-
-                info = new Acc_info_M(name.ToString(),platfo.ToString(), rankName.ToString(), state.ToString(), Convert.ToInt32(level), rankIMG, selectedIMG);
-
-                Dispatcher.Invoke(() => { name_tb.DataContext = info; });
-            });
-
-            
-            return f;
+                info = new Acc_info_M(name.ToString(), platfo.ToString(), rankName.ToString(), state.ToString(), Convert.ToInt32(level), rankIMG, selectedIMG);
+            }
+            catch (Exception l) { MessageBox.Show(l.Message); }
+            finally { DataContext = info; }
         }
 
-
+        BitmapImage DownloadPic(string url)
+        {
+            BitmapImage image = new BitmapImage();
+            using (var client = new WebClient())
+            {
+                byte[] imageData = client.DownloadData(url);
+                using (var stream = new MemoryStream(imageData))
+                {
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.StreamSource = stream;
+                    image.EndInit();
+                }
+            }
+            return image;
+        }
         //close btn
         private void Button_Click(object sender, RoutedEventArgs e)
         {

@@ -17,14 +17,14 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Image x:Name="rank_img" Grid.Row="1"/>
-        <Image x:Name="selectedChar_img" Grid.Row="0"/>
+        <Image x:Name="rank_img" Grid.Row="1" Source="{Binding RankImg}"/>
+        <Image x:Name="selectedChar_img" Grid.Row="0" Source="{Binding SelectedChar_Img}"/>
 
-        <TextBlock x:Name="name_tb" HorizontalAlignment="Center" Margin="0,20,0,0" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" Width="94"/>
-        <TextBlock x:Name="currState_tb" HorizontalAlignment="Left" Margin="71,71,0,0" TextWrapping="Wrap" Text="curr" VerticalAlignment="Top"/>
-        <TextBlock x:Name="platform_tb" HorizontalAlignment="Left" Margin="61,122,0,0" TextWrapping="Wrap" Text="platform" VerticalAlignment="Top"/>
-        <TextBlock x:Name="level_tb" HorizontalAlignment="Left" Margin="269,117,0,0" TextWrapping="Wrap" Text="level" VerticalAlignment="Top"/>
-        <TextBlock x:Name="rankName_tb" HorizontalAlignment="Left" Margin="266,71,0,0" TextWrapping="Wrap" Text="rankName" VerticalAlignment="Top"/>
+        <TextBlock x:Name="name_tb" HorizontalAlignment="Center" Margin="0,20,0,0" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" Width="270" FontWeight="Bold" FontSize="18" TextAlignment="Center"/>
+        <TextBlock x:Name="currState_tb" HorizontalAlignment="Left" Margin="71,71,0,0" TextWrapping="Wrap" Text="{Binding CurrentState}" VerticalAlignment="Top" TextAlignment="Center"/>
+        <TextBlock x:Name="platform_tb" HorizontalAlignment="Left" Margin="61,122,0,0" TextWrapping="Wrap" Text="{Binding Platform}" VerticalAlignment="Top" TextAlignment="Center"/>
+        <TextBlock x:Name="level_tb" HorizontalAlignment="Left" Margin="269,117,0,0" TextWrapping="Wrap" Text="{Binding Level}" VerticalAlignment="Top" TextAlignment="Center"/>
+        <TextBlock x:Name="rankName_tb" HorizontalAlignment="Left" Margin="266,71,0,0" TextWrapping="Wrap" Text="{Binding RankName}" VerticalAlignment="Top" TextAlignment="Center"/>
 
 
         <Button Content="r" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="19" FontFamily="Webdings" Width="20" FontSize="16" Click="Button_Click" Grid.Row="0" Foreground="#FFDDDDDD" Background="{x:Null}" />

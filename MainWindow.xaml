@@ -368,8 +368,7 @@
 
         <Border BorderBrush="Black" BorderThickness="0" Grid.Row="0" Background="Black">
             <Grid>
-                <Button Style="{DynamicResource btnStyle_no_backgroud}" Content="Check Account =>" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" Width="150" FontFamily="Impact" Foreground="#FFE4C9AE" FontSize="18" Margin="535,57,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Click="btn_CheckAcc" >
-                </Button>
+                <Button Style="{DynamicResource btnStyle_no_backgroud}" Content="Check Account =>" HorizontalAlignment="Left" Grid.Row="0" Width="150" FontFamily="Impact" Foreground="#FFE4C9AE" FontSize="18" Margin="535,57,0,13" Background="{x:Null}" BorderBrush="{x:Null}" Click="btn_CheckAcc" />
                 <TextBox x:Name="tb_acccount" Text="Enter account name..." Margin="685,54,0,0" Grid.Row="0" GotFocus="tb_acccount_GotFocus" LostFocus="tb_acccount_LostFocus" FontSize="16" HorizontalAlignment="Left" Width="172" Height="32" VerticalAlignment="Top"></TextBox>
 
                 <Label Style="{DynamicResource label_no_border}" Content="Maps" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" Width="70" FontFamily="Impact" Foreground="#FFE4C9AE" FontSize="18" Margin="308,54,0,0" >

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace Apex_curs
 {
@@ -15,8 +16,8 @@ namespace Apex_curs
         string rankName;
         string currentState;
         int level;
-        Image rankImg;
-        Image selectedChar_Img;
+        BitmapImage rankImg;
+        BitmapImage selectedChar_Img;
 
         public string Name
         {
@@ -63,7 +64,7 @@ namespace Apex_curs
                 OnPropertyChanged("Level");
             }
         }
-        public Image RankImg
+        public BitmapImage RankImg
         {
             get { return rankImg; }
             set
@@ -72,7 +73,7 @@ namespace Apex_curs
                 OnPropertyChanged("RankImg");
             }
         }
-        public Image SelectedChar_Img
+        public BitmapImage SelectedChar_Img
         {
             get { return selectedChar_Img; }
             set
@@ -82,7 +83,7 @@ namespace Apex_curs
             }
         }
 
-        public Acc_info_M(string names, string platforms, string rankNames, string currentStates, int levels, Image rankImgs, Image selected)
+        public Acc_info_M(string names, string platforms, string rankNames, string currentStates, int levels, BitmapImage rankImgs, BitmapImage selected)
         {
             Name = names;
             Platform = platforms;
@@ -92,6 +93,8 @@ namespace Apex_curs
             RankImg = rankImgs;
             SelectedChar_Img = selected;
         }
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

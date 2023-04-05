@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -66,36 +67,6 @@ namespace Apex_curs
                 }
             }
             catch {}
-        }
-        bool Load_account_info(string playerName = "Tendikyrrap")
-        { 
-            bool f = false;
-            Task.Factory.StartNew(async() => 
-            {
-                var httpClient = new HttpClient();
-                var apiKey = "dbb6ed3d331dda882b02101bcc0c608b";
-                var platform = "PC";
-                var test = $"https://api.mozambiquehe.re/bridge?auth={apiKey}&player={playerName}&platform={platform}";
-                var response = await httpClient.GetAsync(test);
-                var result = await response.Content.ReadAsStringAsync();
-
-                Console.WriteLine(result + "\n---------------------------------------------------\n");
-
-                // Разбиваем информацию по группам
-                var stats = JObject.Parse(result);
-                var overallStats = stats["global"];
-                var legendStats = stats["legends"];
-                var weaponStats = stats["weapons"];
-
-                var name = overallStats["name"];
-
-                /*Console.WriteLine(name);
-                foreach (JProperty legend in overallStats)
-                {
-                    Console.WriteLine(legend.Value.ToString());
-                }*/
-            });
-            return f;
         }
 
 
@@ -195,8 +166,14 @@ namespace Apex_curs
                 list_about.SelectedIndex = -1;
 
 
-                Window_Acc_stats form = new Window_Acc_stats();
-                form.ShowDialog();             
+
+                Window_Acc_stats form = new Window_Acc_stats(tb_acccount.Text);
+                form.Closed += delegate
+                {
+                    tb_acccount.Text = "Enter account name...";
+                };
+
+                form.ShowDialog();
             }
         }
 
@@ -209,5 +186,6 @@ namespace Apex_curs
         {
             if (tb_acccount.Text == "") tb_acccount.Text = "Enter account name...";
         }
+
     }
 }
