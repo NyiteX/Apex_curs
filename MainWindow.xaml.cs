@@ -1,21 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml.Linq;
+using System.Windows.Threading;
 using Newtonsoft.Json.Linq;
 
 namespace Apex_curs
@@ -25,18 +18,33 @@ namespace Apex_curs
     /// </summary>
     public partial class MainWindow : Window
     {
+        string apiKey = "dbb6ed3d331dda882b02101bcc0c608b";
         string connectionString = @"Data Source = WIN-U669V8L9R5E; Initial Catalog = GameDB; Trusted_Connection=True";
-        Character_VM Characters_;
-        Map_VM Maps_;
+        Character_VM Characters_;  //legends list
+        Map_VM Maps_;  //maps list
+        Map_timer_M mapUpd_M = new Map_timer_M(); //map timer
+
+        DispatcherTimer timerMapUpd = new DispatcherTimer();
         public MainWindow()
         {
             InitializeComponent();
+     
+            MapTimerUpdate();
             Load_backgroundImg(1);
 
             Characters_ = new Character_VM(connectionString);
             Maps_ = new Map_VM(connectionString);
+
+            timerMapUpd.Interval = TimeSpan.FromMilliseconds(1000);
+            timerMapUpd.Tick += timerTick;
+
+            timerMapUpd.Start();
         }
 
+        void timerTick(object sender, EventArgs e)
+        {
+            MapTimerUpdate();
+        }
         void Load_backgroundImg(int pic_id)
         {
             try
@@ -67,38 +75,35 @@ namespace Apex_curs
             }
             catch {}
         }
-        void Load_account_info(string playerName = "Tendikyrrap")
+
+        async void MapTimerUpdate()
         {
-            Task.Factory.StartNew(async() => 
+            try
             {
                 var httpClient = new HttpClient();
-                var apiKey = "dbb6ed3d331dda882b02101bcc0c608b";
-                var platform = "PC";
-                var test = $"https://api.mozambiquehe.re/bridge?auth={apiKey}&player={playerName}&platform={platform}";
+
+                var test = $"https://api.mozambiquehe.re/maprotation?auth={apiKey}";
                 var response = await httpClient.GetAsync(test);
                 var result = await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine(result + "\n---------------------------------------------------\n");
-
-                // Разбиваем информацию по группам
                 var stats = JObject.Parse(result);
-                var overallStats = stats["global"];
-                var legendStats = stats["legends"];
-                var weaponStats = stats["weapons"];
+                var maps = stats["current"];
+                var map = maps["map"];
+                var remeiningTime = maps["remainingTimer"];
 
-                var name = overallStats["name"];
-
-                /*Console.WriteLine(name);*/
-                foreach (JProperty legend in overallStats)
-                {
-                    Console.WriteLine(legend.Value.ToString());
-                }
-            });
-            
+                mapUpd_M.CurrentMap = $"Current map: {map}";
+                var maps2 = stats["next"];
+                var map2 = maps2["map"];
+                mapUpd_M.NextMap = $"Next map: {map2} start in {remeiningTime}";
+            }
+            catch { }
+            finally 
+            {
+                label_currmap.DataContext = mapUpd_M;
+                label_nextmap.DataContext = mapUpd_M;
+            }
         }
-
-
-
+        //lore text for Legends list
         private void l_box_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -107,17 +112,18 @@ namespace Apex_curs
             }
             catch { }
         }
+        //close btn
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
-
+        //window move
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
         }
-
+        //maximize window
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (WindowState == WindowState.Normal)
@@ -126,6 +132,7 @@ namespace Apex_curs
                 WindowState = WindowState.Normal;
         }
 
+        //added About menu here
         private void l_box_Loaded(object sender, RoutedEventArgs e)
         {
             l_box.Visibility = Visibility.Hidden;
@@ -147,24 +154,80 @@ namespace Apex_curs
         {
             try
             {
-                if(list_maps.SelectedIndex != -1)
+                if (list_maps.SelectedIndex != -1)
                 {
-                    border_map_info.Visibility = Visibility.Visible;
+                    list_about.SelectedIndex = -1;
+                    img_map.Visibility = Visibility.Visible;
                     tb_map_lore.Visibility = Visibility.Visible;
 
-                    try
-                    {
-                        tb_map_lore.Text = Maps_.Items[list_maps.SelectedIndex].Name + "\n\n" + Maps_.Items[list_maps.SelectedIndex].Lore;
-                        img_map.Source = Maps_.Items[list_maps.SelectedIndex].Image;
-                    }
-                    catch { }
+                    tb_map_lore.Text = Maps_.Items[list_maps.SelectedIndex].Name + "\n\n" + Maps_.Items[list_maps.SelectedIndex].Lore;
+                    img_map.Source = Maps_.Items[list_maps.SelectedIndex].Image;
                 }
                 else
                 {
-                    border_map_info.Visibility = Visibility.Hidden;
+                    img_map.Visibility = Visibility.Hidden;
+                    tb_map_lore.Visibility = Visibility.Hidden;
                 }
             }
             catch { }
+        }
+        private void list_about_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (list_about.SelectedIndex != -1)
+                {
+                    list_maps.SelectedIndex = -1;
+
+                    l_box.Visibility = Visibility.Visible;
+                    tb_lore.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    l_box.Visibility = Visibility.Hidden;
+                    tb_lore.Visibility = Visibility.Hidden;
+                }
+            }
+            catch { }
+        }
+
+        private void btn_CheckAcc(object sender, RoutedEventArgs e)
+        {
+            if (tb_acccount.Text != "Enter account name..." && tb_acccount.Text.Count() > 0)
+            {
+                list_maps.SelectedIndex = -1;
+                list_about.SelectedIndex = -1;
+
+                Window_Acc_stats form = new Window_Acc_stats(tb_acccount.Text);
+                form.Closed += delegate
+                {
+                    tb_acccount.Text = "Enter account name...";
+                };
+
+                form.ShowDialog();
+            }
+        }
+
+        private void tb_acccount_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (tb_acccount.Text == "Enter account name...") tb_acccount.Text = "";
+        }
+
+        private void tb_acccount_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (tb_acccount.Text == "") tb_acccount.Text = "Enter account name...";
+        }
+
+        private void Btn_Settings(object sender, RoutedEventArgs e)
+        {
+            Window_Settings form = new Window_Settings(connectionString);
+            form.Closed += delegate
+            {
+                Characters_ = new Character_VM(connectionString);
+                l_box.DataContext = Characters_;                //udp Legends list
+            };
+
+            form.ShowDialog();
         }
     }
 }

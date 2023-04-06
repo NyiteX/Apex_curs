@@ -1,0 +1,43 @@
+﻿<Window x:Class="Apex_curs.Window_Acc_stats"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Apex_curs"
+        mc:Ignorable="d"
+        Title="Window_Acc_stats" Height="450" Width="450"
+        x:Name="mainWindow"
+        WindowStyle="None"
+        BorderBrush="Black"
+        BorderThickness="5,5,5,5"
+        AllowsTransparency="True" AllowDrop="True"
+        WindowStartupLocation="CenterScreen" MouseDown="Window_MouseDown" Icon="/Scroll_magic2.png" Background="#FFEAEAEA">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Image x:Name="rank_img" Grid.Row="1" Source="{Binding RankImg}"/>
+        <Image x:Name="selectedChar_img" Grid.Row="0" Source="{Binding SelectedChar_Img}"/>
+
+        <TextBlock x:Name="name_tb" HorizontalAlignment="Center" Margin="0,20,0,0" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" Width="270" FontWeight="Bold" FontSize="20" TextAlignment="Center" Height="24">
+            <TextBlock.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FFCEE8FD" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Foreground>
+        </TextBlock>
+        <Label Content="Status:" Margin="22,145,369,96" Padding="0" Foreground="White"></Label>
+        <TextBlock x:Name="currState_tb" HorizontalAlignment="Left" Margin="77,145,0,0" TextWrapping="Wrap" Text="{Binding CurrentState}" VerticalAlignment="Top" TextAlignment="Center" Foreground="White"/>
+        <Label Content="Platform:" Margin="22,117,369,96" Padding="0" Foreground="White"></Label>
+        <TextBlock x:Name="platform_tb" HorizontalAlignment="Left" Margin="77,-12,0,0" TextWrapping="Wrap" Text="{Binding Platform}" VerticalAlignment="Center" TextAlignment="Center" Foreground="White"/>
+        <Label Content="Level:" Margin="22,90,369,96" Padding="0" Foreground="White"></Label>
+        <TextBlock x:Name="level_tb" HorizontalAlignment="Left" Margin="77,92,0,0" TextWrapping="Wrap" Text="{Binding Level}" VerticalAlignment="Top" TextAlignment="Center" Foreground="White"/>
+        <TextBlock x:Name="rankName_tb" HorizontalAlignment="Center" Margin="0,231,0,0" TextWrapping="Wrap" Text="{Binding RankName}" VerticalAlignment="Top" TextAlignment="Center" Foreground="Black" FontWeight="Bold" FontSize="18" FontFamily="Nirmala UI"/>
+
+
+        <Button Content="r" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="19" FontFamily="Webdings" Width="20" FontSize="16" Click="Button_Click" Grid.Row="0" Foreground="Red" Background="{x:Null}" />
+        <Button Content="_____" HorizontalAlignment="Right" Margin="0,10,35,0" VerticalAlignment="Top" Height="19" Width="20" FontSize="10" Grid.Row="0" Click="Minimize_btn_click" Foreground="Red" Background="{x:Null}" />
+    </Grid>
+</Window>
