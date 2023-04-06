@@ -132,7 +132,7 @@ namespace Apex_curs
                 WindowState = WindowState.Normal;
         }
 
-        //added About menu here
+        //added 'About' menu items here
         private void l_box_Loaded(object sender, RoutedEventArgs e)
         {
             l_box.Visibility = Visibility.Hidden;
@@ -149,7 +149,7 @@ namespace Apex_curs
         {
             WindowState = WindowState.Minimized;
         }
-
+        // menu visibility changer
         private void list_maps_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -190,14 +190,11 @@ namespace Apex_curs
             }
             catch { }
         }
-
+        /////////////////////////////////////////////////////////////////////////////////////////
         private void btn_CheckAcc(object sender, RoutedEventArgs e)
         {
             if (tb_acccount.Text != "Enter account name..." && tb_acccount.Text.Count() > 0)
             {
-                list_maps.SelectedIndex = -1;
-                list_about.SelectedIndex = -1;
-
                 Window_Acc_stats form = new Window_Acc_stats(tb_acccount.Text);
                 form.Closed += delegate
                 {
