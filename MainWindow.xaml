@@ -171,7 +171,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Foreground" Value="Red"/>
+                                <Setter Property="Foreground" Value="LemonChiffon"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter Property="Foreground" Value="#FFE4C9AE"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -216,7 +219,10 @@
                                 <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border1}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="LemonChiffon"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#FFE4C9AE"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="true">
                                 <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background1}"/>
@@ -385,7 +391,6 @@
                                 <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border3}"/>
                                 <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="Green"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="true">
@@ -461,7 +466,7 @@
 
             </Canvas>
 
-            <ListBox ItemContainerStyle="{DynamicResource ListBoxItemContainer_noBorder}" x:Name="l_box" ItemsSource="{Binding Items}" SelectedItem ="{Binding Character}" Margin="85,0,82,31" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Background="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="l_box_SelectionChanged" Loaded="l_box_Loaded" Foreground="Red" Grid.Row="1" >
+            <ListBox ItemContainerStyle="{DynamicResource ListBoxItemContainer_noBorder}" x:Name="l_box" ItemsSource="{Binding Items}" SelectedItem ="{Binding Character}" Margin="85,0,82,31" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Background="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="l_box_SelectionChanged" Loaded="l_box_Loaded" Foreground="Red" Grid.Row="1" OpacityMask="#FF48744C" >
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />
@@ -469,8 +474,8 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            <Image Source="{Binding Image}" Height = "220" Width = "205"/>
+                        <StackPanel Orientation="Vertical" OpacityMask="#FF48744C">
+                            <Image Source="{Binding Image}" Height = "220" Width = "205" OpacityMask="#FF48744C"/>
                             <Label Content="{Binding Name}" FontSize="25"/>
                         </StackPanel>
                     </DataTemplate>
@@ -484,12 +489,12 @@
 
         <Border BorderBrush="Black" BorderThickness="0" Grid.Row="0" Background="Black">
             <Grid>
-                <Button Style="{DynamicResource btnStyle_no_backgroud}" Content="Check Account =>" HorizontalAlignment="Left" Grid.Row="0" Width="150" FontFamily="Impact" Foreground="#FFE4C9AE" FontSize="18" Margin="535,57,0,13" Background="{x:Null}" BorderBrush="{x:Null}" Click="btn_CheckAcc" />
+                <Button Style="{DynamicResource btnStyle_no_backgroud}" Content="Check Account =>" HorizontalAlignment="Left" Grid.Row="0" Width="150" FontFamily="Impact" FontSize="18" Margin="535,57,0,13" Background="{x:Null}" BorderBrush="{x:Null}" Click="btn_CheckAcc" />
                 <TextBox x:Name="tb_acccount" Text="Enter account name..." Margin="685,54,0,0" Grid.Row="0" GotFocus="tb_acccount_GotFocus" LostFocus="tb_acccount_LostFocus" FontSize="16" HorizontalAlignment="Left" Width="172" Height="32" VerticalAlignment="Top"></TextBox>
 
-                <Label Style="{DynamicResource label_no_border}" Content="Maps" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" Width="70" FontFamily="Impact" Foreground="#FFE4C9AE" FontSize="18" Margin="308,54,0,0" >
+                <Label Style="{DynamicResource label_no_border}" Content="Maps" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" Width="70" FontFamily="Impact" FontSize="18" Margin="308,54,0,0" >
                     <Label.Triggers>
-                        <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                        <EventTrigger RoutedEvent="UIElement.MouseDown">
                             <BeginStoryboard>
                                 <Storyboard Timeline.DesiredFrameRate="60">
                                     <DoubleAnimation Storyboard.TargetName="border_Maps" Storyboard.TargetProperty="(Canvas.Top)"
@@ -501,9 +506,9 @@
                     </Label.Triggers>
                 </Label>
 
-                <Label Style="{DynamicResource label_no_border}" Content="About" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" Width="75" FontFamily="Impact" Foreground="#FFE4C9AE" FontSize="18" Margin="128,54,0,0" >
+                <Label Style="{DynamicResource label_no_border}" Content="About" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" Width="75" FontFamily="Impact" FontSize="18" Margin="128,54,0,0" >
                     <Label.Triggers>
-                        <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                        <EventTrigger RoutedEvent="UIElement.MouseDown">
                             <BeginStoryboard>
                                 <Storyboard Timeline.DesiredFrameRate="60">
                                     <DoubleAnimation Storyboard.TargetName="border_about" Storyboard.TargetProperty="(Canvas.Top)"

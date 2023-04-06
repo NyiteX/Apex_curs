@@ -223,7 +223,8 @@ namespace Apex_curs
             Window_Settings form = new Window_Settings(connectionString);
             form.Closed += delegate
             {
-                Characters_ = new Character_VM(connectionString);     //udp Legends list
+                Characters_ = new Character_VM(connectionString);
+                l_box.DataContext = Characters_;                //udp Legends list
             };
 
             form.ShowDialog();
