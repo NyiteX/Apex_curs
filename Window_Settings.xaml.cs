@@ -34,10 +34,22 @@ namespace Apex_curs
             btn_swap.IsEnabled = false;
         }
 
-
+        byte[] ConvertBitmapSourceToByteArray(ImageSource imageSource)
+        {
+            var image = imageSource as BitmapSource;
+            byte[] data;
+            BitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(image));
+            using (MemoryStream ms = new MemoryStream())
+            {
+                encoder.Save(ms);
+                data = ms.ToArray();
+            }
+            return data;
+        }
         BitmapImage LoadImageFromFile()
         {
-            BitmapImage bitmap = new BitmapImage();
+            BitmapImage bitmap = null;
             try
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -47,6 +59,7 @@ namespace Apex_curs
 
                 if (openFileDialog.FileNames.Length > 0)
                 {
+                    bitmap = new BitmapImage();
                     bitmap.BeginInit();
                     bitmap.UriSource = new Uri(openFileDialog.FileName);
                     bitmap.EndInit();
@@ -55,35 +68,49 @@ namespace Apex_curs
             catch { }
             return bitmap;
         }
+
         //current picture func
         BitmapImage Load_CharacterIMG(string connectionString,string name)
         {
-            BitmapImage BitObj = new BitmapImage();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            BitmapImage BitObj = null;
+            try
             {
-                connection.Open();
-
-                SqlCommand command = new SqlCommand(
-                    $"SELECT Pic_table.Pic,Pic_table.ID FROM Character_my,Pic_table WHERE Pic_table.ID = Character_my.PicID AND Character_my.Names = '{name}'",
-                    connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    byte[] result = (byte[])reader.GetValue(0);
-                    picIDtmp = Convert.ToInt32(reader.GetValue(1));
+                    connection.Open();
 
-                    Stream StreamObj = new MemoryStream(result);
+                    SqlCommand command = new SqlCommand(
+                        $"SELECT Pic_table.Pic,Pic_table.ID FROM Character_my,Pic_table WHERE Pic_table.ID = Character_my.PicID AND Character_my.Names = '{name}'",
+                        connection);
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        BitObj = new BitmapImage();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Not found.");
+                    }
+                    while (reader.Read())
+                    {
+                        byte[] result = (byte[])reader.GetValue(0);
+                        picIDtmp = Convert.ToInt32(reader.GetValue(1));
 
-                    BitObj.BeginInit();
-                    BitObj.StreamSource = StreamObj;
-                    BitObj.EndInit();
+                        Stream StreamObj = new MemoryStream(result);
+
+                        BitObj.BeginInit();
+                        BitObj.StreamSource = StreamObj;
+                        BitObj.EndInit();
+                    }
                 }
             }
+            catch { }
 
             return BitObj;
         }
-        //current picture
+
+        //
+        //current picture(update)
         private void btn_Search_Click(object sender, RoutedEventArgs e)
         {
             if (tb_name.Text.Count() > 0)
@@ -91,7 +118,10 @@ namespace Apex_curs
                 try
                 {
                     current_Image.Source = Load_CharacterIMG(connectionString, tb_name.Text);
-                    btn_addPicture.IsEnabled = true;
+                    if(current_Image.Source != null)
+                    {
+                        btn_addPicture.IsEnabled = true;
+                    }                  
                 }
                 catch{ }
             }
@@ -100,14 +130,17 @@ namespace Apex_curs
                 MessageBox.Show("Legend name is empty.");
             }
         }
-        //new picture
+        //new picture(update)
         private void btn_addPicture_Click(object sender, RoutedEventArgs e)
         {
-            new_Image.Source = LoadImageFromFile();          
-            btn_swap.IsEnabled = true;
+            new_Image.Source = LoadImageFromFile();
+            if(new_Image.Source != null)
+            {
+                btn_swap.IsEnabled = true;
+            }           
         }
 
-        //upd picture btn
+        //upd picture btn(update)
         private void Button_Swap(object sender, RoutedEventArgs e)
         {
             if(tb_name.Text.Count()>0 && current_Image.Source!=null && new_Image.Source != null)
@@ -136,42 +169,7 @@ namespace Apex_curs
                     btn_swap.IsEnabled = false;
                 }                
             }
-        }
-        
-
-
-
-        //
-        //basic buttons
-        //
-        byte[] ConvertBitmapSourceToByteArray(ImageSource imageSource)
-        {
-            var image = imageSource as BitmapSource;
-            byte[] data;
-            BitmapEncoder encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(image));
-            using (MemoryStream ms = new MemoryStream())
-            {
-                encoder.Save(ms);
-                data = ms.ToArray();
-            }
-            return data;
-        }
-        //close btn
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-        //window move
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-                this.DragMove();
-        }
-        private void Minimize_btn_click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
+        }     
 
         //create Legend
         private void btn_createLegend_Click(object sender, RoutedEventArgs e)
@@ -248,6 +246,7 @@ namespace Apex_curs
 
             border_ImageChanger.Visibility = Visibility.Hidden;
             border_DelLegend.Visibility = Visibility.Hidden;
+            Clear_Borders();
         }
         private void RB_update_Checked(object sender, RoutedEventArgs e)
         {
@@ -255,6 +254,7 @@ namespace Apex_curs
 
             border_AddLegends.Visibility = Visibility.Hidden;
             border_DelLegend.Visibility = Visibility.Hidden;
+            Clear_Borders();
         }
         private void RB_delete_Checked(object sender, RoutedEventArgs e)
         {
@@ -262,18 +262,18 @@ namespace Apex_curs
 
             border_AddLegends.Visibility = Visibility.Hidden;
             border_ImageChanger.Visibility = Visibility.Hidden;
+            Clear_Borders();
         }
 
         private void btn_SearchDel_Click(object sender, RoutedEventArgs e)
         {
             if (tb_nameDel.Text.Count() > 0)
             {
-                try
+                del_Image.Source = Load_CharacterIMG(connectionString, tb_nameDel.Text);
+                if (del_Image.Source != null)
                 {
-                    del_Image.Source = Load_CharacterIMG(connectionString, tb_nameDel.Text);
                     btn_Del.IsEnabled = true;
                 }
-                catch { }
             }
             else
             {
@@ -281,6 +281,7 @@ namespace Apex_curs
             }
         }
 
+        //delete Legend
         private void btn_Del_Click(object sender, RoutedEventArgs e)
         {
             if (tb_nameDel.Text.Count() > 0 && del_Image.Source != null)
@@ -307,6 +308,43 @@ namespace Apex_curs
         }
         ///////////////////////////////////////////////////////////////////////////
 
+        void Clear_Borders()
+        {
+            tb_nameAdd.Text = "Name...";
+            tb_name.Text = "";
+            tb_nameDel.Text = "";
+            tb_loreAdd.Text = "Lore...";
+            picIDtmp = -1;
 
+            new_Image.Source = null;
+            current_Image.Source = null;
+            del_Image.Source = null;
+            new_ImageAdd.Source = null;
+
+
+            btn_addPicture.IsEnabled = false;
+            btn_swap.IsEnabled = false;
+            btn_Del.IsEnabled = false;
+        }
+
+
+        //
+        //basic buttons
+        //
+        //close btn
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+        //window move
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
+        private void Minimize_btn_click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
     }
 }

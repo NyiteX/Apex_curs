@@ -75,7 +75,7 @@
         </RadialGradientBrush>
     </Window.Background>
     <Grid>
-        <Border x:Name="border_DelLegend" Visibility="Visible">
+        <Border x:Name="border_DelLegend" Visibility="Hidden">
             <Grid>
                 <StackPanel Margin="58,68,457,301">
                     <Label Content="Legend name here:" Margin="0,0,0,0"/>
