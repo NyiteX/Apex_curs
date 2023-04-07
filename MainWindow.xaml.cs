@@ -215,11 +215,28 @@ namespace Apex_curs
             if (tb_acccount.Text == "") tb_acccount.Text = "Enter account name...";
         }
 
+        string login_tmp ="";
+        string pass_tmp="";
         private void Btn_Settings(object sender, RoutedEventArgs e)
         {
-            Window_Settings form = new Window_Settings(connectionString);
+            Window_Settings form;
+            if(login_tmp.Count() > 0 && pass_tmp.Count() > 0)
+            {
+                form = new Window_Settings(connectionString, login_tmp, pass_tmp);  //if 'remember me' checked
+                pass_tmp = "";
+                login_tmp = "";
+            }
+            else
+            {
+                form = new Window_Settings(connectionString);
+            }
             form.Closed += delegate
             {
+                if(form.chkBox_loginSave.IsChecked == true)
+                {
+                    login_tmp = form.tb_login.Text;
+                    pass_tmp = form.passwordBox_.Password;
+                }
                 Characters_ = new Character_VM(connectionString);
                 l_box.DataContext = Characters_;                //udp Legends list
             };

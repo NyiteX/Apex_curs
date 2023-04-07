@@ -1,20 +1,14 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
+using System.Xml.Linq;
 
 namespace Apex_curs
 {
@@ -23,15 +17,31 @@ namespace Apex_curs
     /// </summary>
     public partial class Window_Settings : Window
     {
+        const string connectDBLogin = @"Data Source = WIN-U669V8L9R5E; Initial Catalog = Users_GameDB; Trusted_Connection=True";
         string connectionString;
         int picIDtmp;
-        public Window_Settings(string connectionString)
+        public Window_Settings(string connectstr)
         {
             InitializeComponent();
 
-            this.connectionString = connectionString;
+            connectionString = connectstr;
             btn_addPicture.IsEnabled = false;
             btn_swap.IsEnabled = false;
+        }
+        public Window_Settings(string connectstr, string login,string pass)
+        {
+            InitializeComponent();
+
+            connectionString = connectstr;            
+            btn_addPicture.IsEnabled = false;
+            btn_swap.IsEnabled = false;
+
+            tb_login.Text = login;
+            passwordBox_.Password = pass;
+
+            border_login.Visibility = Visibility.Hidden;
+            panel_menu.Visibility = Visibility.Visible;
+            chkBox_loginSave.IsChecked = true;
         }
 
         byte[] ConvertBitmapSourceToByteArray(ImageSource imageSource)
@@ -220,26 +230,42 @@ namespace Apex_curs
         //
         private void tb_loreAdd_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (tb_loreAdd.Text == "Lore...") tb_loreAdd.Text = "";
+            if (tb_loreAdd.Text == "Lore...")
+            {
+                tb_loreAdd.Text = "";
+                tb_loreAdd.Foreground = Brushes.Black;
+            }
         }
 
         private void tb_loreAdd_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (tb_loreAdd.Text == "") tb_loreAdd.Text = "Lore...";
+            if (tb_loreAdd.Text == "")
+            {
+                tb_loreAdd.Text = "Lore...";
+                tb_loreAdd.Foreground = Brushes.Gray;
+            }
         }
 
         private void tb_nameAdd_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (tb_nameAdd.Text == "Name...") tb_nameAdd.Text = "";
+            if (tb_nameAdd.Text == "Name...")
+            {
+                tb_nameAdd.Text = "";
+                tb_nameAdd.Foreground = Brushes.Black;
+            }
         }
 
         private void tb_nameAdd_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (tb_nameAdd.Text == "") tb_nameAdd.Text = "Name...";
+            if (tb_nameAdd.Text == "")
+            {
+                tb_nameAdd.Text = "Name...";
+                tb_nameAdd.Foreground = Brushes.Gray;
+            }
         }
         ////////
        
-        //visibility changer
+        //visibility changer(menu)
         private void RB_create_Checked(object sender, RoutedEventArgs e)
         {
             border_AddLegends.Visibility = Visibility.Visible;
@@ -265,6 +291,7 @@ namespace Apex_curs
             Clear_Borders();
         }
 
+        //lf Legend by name
         private void btn_SearchDel_Click(object sender, RoutedEventArgs e)
         {
             if (tb_nameDel.Text.Count() > 0)
@@ -345,6 +372,54 @@ namespace Apex_curs
         private void Minimize_btn_click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
+        }
+
+        private void btn_login_Click(object sender, RoutedEventArgs e)
+        {
+            if (tb_login.Text.Count() > 0 && passwordBox_.Password.Count() > 0)
+            {
+                using (SqlConnection connection = new SqlConnection(connectDBLogin))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(
+                    $"SELECT * FROM Users WHERE Login_ = '{tb_login.Text}' AND Password_ = '{passwordBox_.Password}' AND IsAdmin = 1",
+                    connection);
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (!reader.HasRows)
+                    {
+                        passwordBox_.Password = "";
+                        tb_login.Text = "";
+
+                        chkBox_loginSave.IsChecked = false;
+                        MessageBox.Show("Wrong Login or Password.", "Error");
+                    }
+                    else
+                    {
+                        border_login.Visibility = Visibility.Hidden;
+                        panel_menu.Visibility = Visibility.Visible;
+                    }
+                }             
+            }
+            else
+            {
+                MessageBox.Show("Login and Password are necessary.", "Warning");
+            }
+        }
+
+        private void Button_LogOut_Click(object sender, RoutedEventArgs e)
+        {
+            Clear_Borders();
+            passwordBox_.Password = "";
+            tb_login.Text = "";
+            connectionString = "";
+
+            border_login.Visibility = Visibility.Visible;
+            panel_menu.Visibility = Visibility.Hidden;
+            chkBox_loginSave.IsChecked = false;
+
+            border_AddLegends.Visibility = Visibility.Hidden;
+            border_DelLegend.Visibility= Visibility.Hidden;
+            border_ImageChanger.Visibility = Visibility.Hidden;
         }
     }
 }
