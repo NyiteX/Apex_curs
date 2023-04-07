@@ -489,8 +489,12 @@
 
         <Border BorderBrush="Black" BorderThickness="0" Grid.Row="0" Background="Black">
             <Grid>
-                <Button Style="{DynamicResource btnStyle_no_backgroud}" Content="Check Account =>" HorizontalAlignment="Left" Grid.Row="0" Width="150" FontFamily="Impact" FontSize="18" Margin="535,57,0,13" Background="{x:Null}" BorderBrush="{x:Null}" Click="btn_CheckAcc" />
-                <TextBox x:Name="tb_acccount" Text="Enter account name..." Margin="685,54,0,0" Grid.Row="0" GotFocus="tb_acccount_GotFocus" LostFocus="tb_acccount_LostFocus" FontSize="16" HorizontalAlignment="Left" Width="172" Height="32" VerticalAlignment="Top"></TextBox>
+                <RadioButton x:Name="chk_royale" Content="Battle Royale" Margin="823,5,96,68" Foreground="#FFE4C9AE" IsChecked="True"></RadioButton>
+                <RadioButton x:Name="chk_ranked" Content="Ranked Battle Royale" Margin="823,28,96,45" Foreground="#FFE4C9AE"></RadioButton>
+                <RadioButton x:Name="chk_rankedArena" Content="Ranked Arena" Margin="823,51,96,22" Foreground="#FFE4C9AE"></RadioButton>
+                <RadioButton x:Name="chk_funMap" Content="Fun Map" Margin="823,74,96,-1" Foreground="#FFE4C9AE"></RadioButton>
+                <Button Style="{DynamicResource btnStyle_no_backgroud}" Content="Check Account =>" HorizontalAlignment="Left" Grid.Row="0" Width="150" FontFamily="Impact" FontSize="18" Margin="465,60,0,10" Background="{x:Null}" BorderBrush="{x:Null}" Click="btn_CheckAcc" />
+                <TextBox x:Name="tb_acccount" Text="Enter account name..." Margin="615,57,0,0" Grid.Row="0" Foreground="Gray" GotFocus="tb_acccount_GotFocus" LostFocus="tb_acccount_LostFocus" FontSize="16" HorizontalAlignment="Left" Width="172" Height="32" VerticalAlignment="Top"></TextBox>
 
                 <Label Style="{DynamicResource label_no_border}" Content="Maps" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" Width="70" FontFamily="Impact" FontSize="18" Margin="308,54,0,0" >
                     <Label.Triggers>
