@@ -97,10 +97,15 @@ namespace Apex_curs
                 var map = maps["map"];
                 var remeiningTime = maps["remainingTimer"];
 
-                mapUpd_M.CurrentMap = $"Current map: {map}";
+                mapUpd_M.CurrentMap_msg1 = "Current map: ";
+                mapUpd_M.CurrentMap_msg2 = $"{map}";
+
                 var maps2 = battleRoyale["next"];
                 var map2 = maps2["map"];
-                mapUpd_M.NextMap = $"Next map: {map2} start in {remeiningTime}";
+                mapUpd_M.NextMap_msg1 = "Next map: ";
+                mapUpd_M.NextMap_msg2 = $"{map2} ";
+                mapUpd_M.NextMap_msg3 = "start in ";
+                mapUpd_M.NextMap_msg4 = $"{remeiningTime}";
             }
             catch { }
             finally 

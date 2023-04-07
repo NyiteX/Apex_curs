@@ -525,8 +525,20 @@
                 </Label>
             </Grid>
         </Border>
-        <Label Style="{DynamicResource label_no_border}" Content="{Binding CurrentMap}" x:Name="label_currmap" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" FontFamily="Impact" Foreground="#FFE4C9AE" FontSize="16" Margin="100,14,0,0"></Label>
-        <Label Style="{DynamicResource label_no_border}" Content="{Binding NextMap}" x:Name="label_nextmap" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" FontFamily="Impact" Foreground="#FFE4C9AE" FontSize="16" Margin="380,14,0,0"></Label>
+        <Label Style="{DynamicResource label_no_border}" x:Name="label_currmap" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" FontFamily="Impact" Foreground="#FFE4C9AE" FontSize="16" Margin="100,14,0,0">
+            <TextBlock>
+    <Run Foreground="#FFE4C9AE" Text="{Binding CurrentMap_msg1}" />
+    <Run Foreground="Chartreuse" Text="{Binding CurrentMap_msg2}" />
+            </TextBlock>
+        </Label>
+        <Label Style="{DynamicResource label_no_border}" x:Name="label_nextmap" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Top" FontFamily="Impact" Foreground="#FFE4C9AE" FontSize="16" Margin="380,14,0,0">
+            <TextBlock>
+    <Run Foreground="#FFE4C9AE" Text="{Binding NextMap_msg1}" />
+    <Run Foreground="Chartreuse" Text="{Binding NextMap_msg2}" />
+    <Run Foreground="#FFE4C9AE" Text="{Binding NextMap_msg3}" />
+    <Run Foreground="Red" Text="{Binding NextMap_msg4}" />
+            </TextBlock>
+        </Label>
 
         <Button Content="r" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="31" FontFamily="Webdings" Width="31" FontSize="30" Click="Button_Click" Grid.Row="0" Foreground="#FFDDDDDD" Background="{x:Null}" Style="{DynamicResource btn_noBackground_colorText}" Padding="0"/>
         <Button Content="_____" HorizontalAlignment="Right" Margin="0,10,60,0" VerticalAlignment="Top" Height="31" Width="31" FontSize="18" Grid.Row="0" Click="Minimize_btn_click" Foreground="#FFDDDDDD" Background="{x:Null}" Style="{DynamicResource btn_noBackground_colorText}" Padding="0"/>
