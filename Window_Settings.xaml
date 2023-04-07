@@ -75,62 +75,186 @@
         </RadialGradientBrush>
     </Window.Background>
     <Grid>
-        <StackPanel Margin="58,68,457,301">
-            <Label Content="Legend name here:" Margin="0,0,0,0"/>
-            <TextBox x:Name="tb_name" HorizontalAlignment="Right" Margin="0,-22,0,0" TextWrapping="Wrap" Width="163"/>
+        <Border x:Name="border_DelLegend" Visibility="Hidden">
+            <Grid>
+                <StackPanel Margin="58,68,457,301">
+                    <Label Content="Legend name here:" Margin="0,0,0,0"/>
+                    <TextBox x:Name="tb_nameDel" HorizontalAlignment="Right" Margin="0,-22,0,0" TextWrapping="Wrap" Width="163"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,133,0,0">
+
+                    <Image x:Name="del_Image" HorizontalAlignment="Left" Height="215" Margin="69,37,0,0" VerticalAlignment="Top" Width="272"/>
+                    <Label Content="Legend Image" Margin="130,0,0,0" FontWeight="Bold" FontSize="18">
+                        <Label.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="Black"/>
+                                <GradientStop Color="#FF5D32D6" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Label.Foreground>
+                    </Label>
+
+                </StackPanel>
+                <Button x:Name="btn_SearchDel" Style="{DynamicResource Button_circle_redText}" Content="Run" Margin="139,101,538,306" Foreground="LightSalmon" FontWeight="Bold" FontSize="14" Click="btn_SearchDel_Click">
+                    <Button.Background>
+                        <RadialGradientBrush Center="0.5,0.5" RadiusX="0.6" RadiusY="0.6">
+                            <GradientStop Color="#FF00A455" Offset="0"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Button.Background>
+                </Button>
+
+                <Label Content="Delete Legend" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="232,-7,232,394" Padding="0" FontSize="33" Background="{x:Null}" FontWeight="Bold" FontFamily="Comic Sans MS">
+                    <Label.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF77005C" Offset="1"/>
+                            <GradientStop Color="#FF004FA5"/>
+                        </LinearGradientBrush>
+                    </Label.Foreground>
+                </Label>
+                <Line X1="0" Y1="150" X2="{Binding ElementName=mainWindow, Path=ActualWidth}" Y2="150" Stroke="Black"></Line>
+                <Line X1="0" Y1="60" X2="{Binding ElementName=mainWindow, Path=ActualWidth}" Y2="60" Stroke="Black"></Line>
+                <Button x:Name="btn_Del" IsEnabled="False" Style="{DynamicResource Button_circle_redText}" Content="Delete" Margin="507,104,170,304" Foreground="LightSalmon" FontWeight="Bold" FontSize="14" Click="btn_Del_Click">
+                    <Button.Background>
+                        <RadialGradientBrush Center="0.5,0.5" RadiusX="0.6" RadiusY="0.6">
+                            <GradientStop Color="#FFA41700" Offset="0"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Button.Background>
+                </Button>
+            </Grid>
+        </Border>
+
+
+        <Border x:Name="border_AddLegends" Visibility="Hidden">
+            <Grid>
+                <Label Content="Legend Name:" Margin="64,163,625,236"></Label>
+                <Button x:Name="btn_addPicture_Add" Content="Open new image" Margin="543,100,123,306" Style="{DynamicResource Button_circle_redText}" Foreground="LightSalmon" FontWeight="Bold" FontSize="14" Click="btn_addPic_addPanel">
+                    <Button.Background>
+                        <RadialGradientBrush RadiusX="0.6" RadiusY="0.6">
+                            <GradientStop Color="#FF00A455" Offset="0"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="btn_createLegend" Content="Create Legend" Margin="158,388,508,18" Style="{DynamicResource Button_circle_redText}" Foreground="LightSalmon" FontWeight="Bold" FontSize="14" Click="btn_createLegend_Click">
+                    <Button.Background>
+                        <RadialGradientBrush RadiusX="0.6" RadiusY="0.6">
+                            <GradientStop Color="#FF00A455" Offset="0"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Button.Background>
+                </Button>
+
+                <Image x:Name="new_ImageAdd" HorizontalAlignment="Right" Height="215" Margin="0,0,40,52" VerticalAlignment="Bottom" Width="272"/>
+                <Label Content="New Image" Margin="555,384,111,10" FontWeight="Bold" FontSize="18">
+                    <Label.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="#FF5D32D6" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Label.Foreground>
+                </Label>
+                <TextBox x:Name="tb_loreAdd" HorizontalAlignment="Left" Margin="64,220,0,0" TextWrapping="Wrap" Text="Lore..." Foreground="Gray"  VerticalAlignment="Top" Width="312" Height="117" GotFocus="tb_loreAdd_GotFocus" LostFocus="tb_loreAdd_LostFocus"/>
+                <TextBox x:Name="tb_nameAdd" HorizontalAlignment="Left" Margin="150,167,0,0" TextWrapping="Wrap" Text="Name..." Foreground="Gray" VerticalAlignment="Top" Width="142" Height="28" GotFocus="tb_nameAdd_GotFocus" LostFocus="tb_nameAdd_LostFocus"/>
+
+
+                <Label Content="New Legends" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="232,-7,232,394" Padding="0" FontSize="33" Background="{x:Null}" FontWeight="Bold" FontFamily="Comic Sans MS">
+                    <Label.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF77005C" Offset="1"/>
+                            <GradientStop Color="#FF004FA5"/>
+                        </LinearGradientBrush>
+                    </Label.Foreground>
+                </Label>
+                <Line X1="0" Y1="150" X2="{Binding ElementName=mainWindow, Path=ActualWidth}" Y2="150" Stroke="Black"></Line>
+                <Line X1="0" Y1="60" X2="{Binding ElementName=mainWindow, Path=ActualWidth}" Y2="60" Stroke="Black"></Line>
+                <Label Content="Lore:" Margin="25,216,717,192"/>
+            </Grid>
+        </Border>
+
+
+        <Border x:Name="border_ImageChanger" Visibility="Hidden">
+            <Grid>
+                <StackPanel Margin="58,68,457,301">
+                    <Label Content="Legend name here:" Margin="0,0,0,0"/>
+                    <TextBox x:Name="tb_name" HorizontalAlignment="Right" Margin="0,-22,0,0" TextWrapping="Wrap" Width="163"/>
+                </StackPanel>
+
+                <Button x:Name="btn_addPicture" Content="Open new image" Margin="543,100,123,306" Click="btn_addPicture_Click" Style="{DynamicResource Button_circle_redText}" Foreground="LightSalmon" FontWeight="Bold" FontSize="14">
+                    <Button.Background>
+                        <RadialGradientBrush RadiusX="0.6" RadiusY="0.6">
+                            <GradientStop Color="#FF00A455" Offset="0"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Button.Background>
+                </Button>
+
+                <StackPanel Margin="0,133,0,0">
+
+                    <Image x:Name="current_Image" HorizontalAlignment="Left" Height="215" Margin="69,37,0,0" VerticalAlignment="Top" Width="272"/>
+                    <Image x:Name="new_Image" HorizontalAlignment="Right" Height="215" Margin="0,-217,60,0" VerticalAlignment="Bottom" Width="272"/>
+                    <Label Content="Current Image" Margin="130,0,0,0" FontWeight="Bold" FontSize="18">
+                        <Label.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="Black"/>
+                                <GradientStop Color="#FF5D32D6" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Label.Foreground>
+                    </Label>
+                    <Label Content="New Image" Margin="550,-35,0,0" FontWeight="Bold" FontSize="18">
+                        <Label.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="Black"/>
+                                <GradientStop Color="#FF5D32D6" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Label.Foreground>
+                    </Label>
+                </StackPanel>
+                <Button x:Name="btn_Search" Style="{DynamicResource Button_circle_redText}" Content="Run" Margin="139,101,538,306" Click="btn_Search_Click" Foreground="LightSalmon" FontWeight="Bold" FontSize="14">
+                    <Button.Background>
+                        <RadialGradientBrush Center="0.5,0.5" RadiusX="0.6" RadiusY="0.6">
+                            <GradientStop Color="#FF00A455" Offset="0"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Button.Background>
+                </Button>
+
+                <Label Content="Image changer" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="232,-7,232,394" Padding="0" FontSize="33" Background="{x:Null}" FontWeight="Bold" FontFamily="Comic Sans MS">
+                    <Label.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF77005C" Offset="1"/>
+                            <GradientStop Color="#FF004FA5"/>
+                        </LinearGradientBrush>
+                    </Label.Foreground>
+                </Label>
+                <Line X1="0" Y1="150" X2="{Binding ElementName=mainWindow, Path=ActualWidth}" Y2="150" Stroke="Black"></Line>
+                <Line X1="0" Y1="60" X2="{Binding ElementName=mainWindow, Path=ActualWidth}" Y2="60" Stroke="Black"></Line>
+                <Button Content="Swap" x:Name="btn_swap" Margin="372,207,390,49" Padding="0" Click="Button_Swap"></Button>
+            </Grid>
+        </Border>
+
+
+        <StackPanel x:Name="panel_menu" Orientation="Vertical" Margin="39,0,517,377" Visibility="Hidden">
+            <RadioButton x:Name="RB_create" Content="Create Legend" Checked="RB_create_Checked" FontSize="16"></RadioButton>
+            <RadioButton x:Name="RB_update" Content="Update Image(Legend)" Checked="RB_update_Checked" FontSize="15"></RadioButton>
+            <RadioButton x:Name="RB_delete" Content="Delete Legend" Checked="RB_delete_Checked" FontSize="14"></RadioButton>
         </StackPanel>
 
-        <Button x:Name="btn_addPicture" Content="Open new image" Margin="543,100,123,306" Click="btn_addPicture_Click" Style="{DynamicResource Button_circle_redText}" Foreground="LightSalmon" FontWeight="Bold" FontSize="14">
-            <Button.Background>
-                <RadialGradientBrush RadiusX="0.6" RadiusY="0.6">
-                    <GradientStop Color="#FF00A455" Offset="0"/>
-                    <GradientStop Color="Black" Offset="1"/>
-                </RadialGradientBrush>
-            </Button.Background>
-        </Button>
-
-        <StackPanel Margin="0,133,0,0">
-
-            <Image x:Name="current_Image" HorizontalAlignment="Left" Height="215" Margin="69,37,0,0" VerticalAlignment="Top" Width="272"/>
-            <Image x:Name="new_Image" HorizontalAlignment="Right" Height="215" Margin="0,-217,60,0" VerticalAlignment="Bottom" Width="272"/>
-            <Label Content="Current Image" Margin="130,0,0,0" FontWeight="Bold" FontSize="18">
-                <Label.Foreground>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="Black"/>
-                        <GradientStop Color="#FF5D32D6" Offset="1"/>
-                    </LinearGradientBrush>
-                </Label.Foreground>
-            </Label>
-            <Label Content="New Image" Margin="550,-35,0,0" FontWeight="Bold" FontSize="18">
-                <Label.Foreground>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="Black"/>
-                        <GradientStop Color="#FF5D32D6" Offset="1"/>
-                    </LinearGradientBrush>
-                </Label.Foreground>
-            </Label>
-        </StackPanel>
-        <Button Style="{DynamicResource Button_circle_redText}" x:Name="btn_Search" Content="Run" Margin="139,101,538,306" Click="btn_Search_Click" Foreground="LightSalmon" FontWeight="Bold" FontSize="14">
-            <Button.Background>
-                <RadialGradientBrush Center="0.5,0.5" RadiusX="0.6" RadiusY="0.6">
-                    <GradientStop Color="#FF00A455" Offset="0"/>
-                    <GradientStop Color="Black" Offset="1"/>
-                </RadialGradientBrush>
-            </Button.Background>
-        </Button>
-
-        <Label Content="Image changer" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="232,-7,232,394" Padding="0" FontSize="33" Background="{x:Null}" FontWeight="Bold" FontFamily="Comic Sans MS">
-            <Label.Foreground>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF77005C" Offset="1"/>
-                    <GradientStop Color="#FF004FA5"/>
-                </LinearGradientBrush>
-            </Label.Foreground>
-        </Label>
-        <Line X1="0" Y1="150" X2="{Binding ElementName=mainWindow, Path=ActualWidth}" Y2="150" Stroke="Black"></Line>
-        <Line X1="0" Y1="50" X2="{Binding ElementName=mainWindow, Path=ActualWidth}" Y2="50" Stroke="Black"></Line>
+        <Border x:Name="border_login">
+            <Grid>
+                <Label Content="Login" Margin="86,120,649,285"/>
+                <TextBox x:Name="tb_login" Margin="146,120,389,290"></TextBox>
+                <Label Content="Password" Margin="77,177,644,232"></Label>
+                <Button x:Name="btn_login" Content="Login" Margin="189,246,432,163" Click="btn_login_Click"></Button>
+                <CheckBox x:Name="chkBox_loginSave" Content="Remember me" Margin="226,298,445,111"/>
+                <PasswordBox x:Name="passwordBox_" Margin="146,177,389,232" PasswordChar="*" FontWeight="Bold" FontSize="16"/>
+            </Grid>
+        </Border>
+        <Button Content="LogOut" HorizontalAlignment="Right" Margin="0,44,10,0" VerticalAlignment="Top" Height="29" Width="50" Grid.Row="0" Foreground="Red" Background="#FF444444" Style="{DynamicResource Button_circle_redText}" FontWeight="Bold" Click="Button_LogOut_Click" />
         <Button Content="r" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="19" FontFamily="Webdings" Width="20" FontSize="16" Click="Button_Click" Grid.Row="0" Foreground="Red" Background="{x:Null}" />
         <Button Content="_____" HorizontalAlignment="Right" Margin="0,10,35,0" VerticalAlignment="Top" Height="19" Width="20" FontSize="10" Grid.Row="0" Click="Minimize_btn_click" Foreground="Red" Background="{x:Null}" />
-        <Button Content="Swap" x:Name="btn_swap" Margin="372,207,390,49" Padding="0" Click="Button_Swap"></Button>
     </Grid>
+
+
 </Window>

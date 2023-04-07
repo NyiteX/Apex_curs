@@ -423,7 +423,7 @@
 
             <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="tb_lore" HorizontalAlignment="Right" Margin="0,65,97,0" VerticalAlignment="Top" Width="896" Height="228" Background="{x:Null}" BorderBrush="{x:Null}" VerticalScrollBarVisibility="Hidden" TextWrapping="WrapWithOverflow" FontSize="20" BorderThickness="0,0,0,0" IsReadOnly="True" FontFamily="MV Boli" Cursor="Arrow" Grid.Row="0"/>
 
-            <Canvas Grid.Row="0" Grid.RowSpan="5" Background="#00FFB6C1" Margin="0,0,-10,-133" Focusable="False">
+            <Canvas Grid.Row="0" Grid.RowSpan="5" Background="#00FFB6C1" Margin="0,0,-10,-133" Focusable="False" ScrollViewer.CanContentScroll="True">
                 <StackPanel x:Name="border_Maps" Width="200" Height="214" Canvas.Left="300" Canvas.Top="-225" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#72000000">
                     <StackPanel.Triggers>
                         <EventTrigger RoutedEvent="UIElement.MouseLeave">
