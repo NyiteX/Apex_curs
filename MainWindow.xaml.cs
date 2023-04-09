@@ -82,19 +82,30 @@ namespace Apex_curs
             {
                 var httpClient = new HttpClient();
 
-                var test = $"https://api.mozambiquehe.re/maprotation?auth={apiKey}";
+                var test = $"https://api.mozambiquehe.re/maprotation?auth={apiKey}&version=2";
                 var response = await httpClient.GetAsync(test);
                 var result = await response.Content.ReadAsStringAsync();
 
+                string typeMap = "battle_royale";
+                if(chk_ranked.IsChecked == true) typeMap = "ranked";
+                else if(chk_rankedArena.IsChecked == true) typeMap = "arenasRanked";
+                else if(chk_funMap.IsChecked == true) typeMap = "ltm";
+
                 var stats = JObject.Parse(result);
-                var maps = stats["current"];
+                var battleRoyale = stats[typeMap];
+                var maps = battleRoyale["current"];
                 var map = maps["map"];
                 var remeiningTime = maps["remainingTimer"];
 
-                mapUpd_M.CurrentMap = $"Current map: {map}";
-                var maps2 = stats["next"];
+                mapUpd_M.CurrentMap_msg1 = "Current map: ";
+                mapUpd_M.CurrentMap_msg2 = $"{map}";
+
+                var maps2 = battleRoyale["next"];
                 var map2 = maps2["map"];
-                mapUpd_M.NextMap = $"Next map: {map2} start in {remeiningTime}";
+                mapUpd_M.NextMap_msg1 = "Next map: ";
+                mapUpd_M.NextMap_msg2 = $"{map2} ";
+                mapUpd_M.NextMap_msg3 = "start in ";
+                mapUpd_M.NextMap_msg4 = $"{remeiningTime}";
             }
             catch { }
             finally 
@@ -207,12 +218,20 @@ namespace Apex_curs
 
         private void tb_acccount_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (tb_acccount.Text == "Enter account name...") tb_acccount.Text = "";
+            if (tb_acccount.Text == "Enter account name...")
+            {
+                tb_acccount.Text = "";
+                tb_acccount.Foreground = Brushes.Black;
+            }
         }
 
         private void tb_acccount_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (tb_acccount.Text == "") tb_acccount.Text = "Enter account name...";
+            if (tb_acccount.Text == "")
+            { 
+                tb_acccount.Text = "Enter account name...";
+                tb_acccount.Foreground = Brushes.Gray;
+            }
         }
 
         string login_tmp ="";

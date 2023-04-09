@@ -58,8 +58,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Acc_info_M.cs" />
-    <Compile Include="Map_timer_M.cs" />
+    <Compile Include="Classes\Acc_info_M.cs" />
+    <Compile Include="Classes\Map_timer_M.cs" />
     <Compile Include="Window_Acc_stats.xaml.cs">
       <DependentUpon>Window_Acc_stats.xaml</DependentUpon>
     </Compile>
@@ -74,8 +74,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Character_M.cs" />
-    <Compile Include="Character_VM.cs" />
+    <Compile Include="Classes\Character_M.cs" />
+    <Compile Include="Classes\Character_VM.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -90,7 +90,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Map_VM.cs" />
+    <Compile Include="Classes\Map_VM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

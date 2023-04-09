@@ -50,6 +50,7 @@ namespace Apex_curs
             byte[] data;
             BitmapEncoder encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(image));
+
             using (MemoryStream ms = new MemoryStream())
             {
                 encoder.Save(ms);
@@ -179,8 +180,10 @@ namespace Apex_curs
                     btn_swap.IsEnabled = false;
                 }                
             }
-        }     
+        } 
 
+        //
+        //
         //create Legend
         private void btn_createLegend_Click(object sender, RoutedEventArgs e)
         {
@@ -210,7 +213,13 @@ namespace Apex_curs
                         command.ExecuteNonQuery();
                     }
                 }
-                catch (Exception s){ MessageBox.Show(s.Message); }
+                catch 
+                {
+                    MessageBox.Show("Name doesnt exist.");
+                    tb_loreAdd.Text = "Lore...";
+                    tb_nameAdd.Text = "Name...";
+                    new_ImageAdd.Source = null;
+                }
             }
             else
             {

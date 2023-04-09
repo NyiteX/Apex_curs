@@ -34,9 +34,6 @@ namespace Apex_curs
                 var response = await httpClient.GetAsync(test);
                 var result = await response.Content.ReadAsStringAsync();
 
-                //MessageBox.Show(result + "\n---------------------------------------------------\n");
-
-                // Разбиваем информацию по группам
                 var stats = JObject.Parse(result);
                 var overallStats = stats["global"];
                 var legendStats = stats["legends"];
