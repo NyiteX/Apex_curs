@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Apex_curs.Classes;
+using Microsoft.Win32;
 using System;
 using System.Data.SqlClient;
 using System.IO;
@@ -383,15 +384,18 @@ namespace Apex_curs
             WindowState = WindowState.Minimized;
         }
 
+        //login
         private void btn_login_Click(object sender, RoutedEventArgs e)
         {
+/*            tb_login.Text = (HashClass.ToSHA256(passwordBox_.Password));
+            return;*/
             if (tb_login.Text.Count() > 0 && passwordBox_.Password.Count() > 0)
             {
                 using (SqlConnection connection = new SqlConnection(connectDBLogin))
                 {
                     connection.Open();
                     SqlCommand command = new SqlCommand(
-                    $"SELECT * FROM Users WHERE Login_ = '{tb_login.Text}' AND Password_ = '{passwordBox_.Password}' AND IsAdmin = 1",
+                    $"SELECT * FROM Users WHERE Login_ = '{tb_login.Text}' AND Password_ = '{HashClass.ToSHA256(passwordBox_.Password)}' AND IsAdmin = 1",
                     connection);
                     SqlDataReader reader = command.ExecuteReader();
                     if (!reader.HasRows)

@@ -36,20 +36,20 @@ namespace Apex_curs
             Load_CharactersToList(connectionString);
         }
 
-        void Load_CharactersToList(string connectionString)
+        async void Load_CharactersToList(string connectionString)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
 
                     SqlCommand command = new SqlCommand(
                         "SELECT Character_my.Names,Character_my.Lore,Pic_table.Pic FROM Character_my,Pic_table WHERE Pic_table.ID = Character_my.PicID",
                         connection);
-                    SqlDataReader reader = command.ExecuteReader();
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
 
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
                         byte[] result = (byte[])reader.GetValue(2);
 
